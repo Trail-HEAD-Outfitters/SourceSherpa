@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sourcesherpa"
+version = "0.1.0"
+description = "Context block extractor and API for LLM/RAG"
+authors = [{name="Scott London"}]
+dependencies = [
+    "fastapi",
+    "pydantic",
+    "uvicorn",
+    "pymongo"
+]

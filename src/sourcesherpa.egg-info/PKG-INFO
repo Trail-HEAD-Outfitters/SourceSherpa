@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: sourcesherpa
+Version: 0.1.0
+Summary: Context block extractor and API for LLM/RAG
+Author: Scott London
+Requires-Dist: fastapi
+Requires-Dist: pydantic
+Requires-Dist: uvicorn
+Requires-Dist: pymongo

@@ -2,25 +2,39 @@
 
 A modular backend for extracting, storing, and serving source code context for LLM/RAG workflows.
 
-## Quickstart
+## 🚀 Quickstart
 
-1. Install dependencies:
-    pip install -e .
+### 1. Clone and Setup Your Virtual Environment
 
-2. Run the API:
-    uvicorn sourcesherpa.api.main:app --reload
+```bash
+git clone <your-sourcesherpa-repo-url>
+cd sourcesherpa
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements.txt
 
-3. Use the CLI:
-    python -m sourcesherpa.cli.main --help
+---
+
+### 2 Dev Notes
+pip install -e .
+uvicorn api.main:app --reload --app-dir src
+python src/cli/main.py extract_and_load
+curl -X POST "http://127.0.0.1:8000/context/query" \
+     -H "Content-Type: application/json" \
+     -d '{"question": "Where are controllers?", "patterns": ["Controller"], "max_blocks": 5}'
+
+---
+
 
 ## Project Structure
 
-- `src/sourcesherpa/api` — FastAPI API layer
-- `src/sourcesherpa/storage` — Storage backends (Mongo, etc)
-- `src/sourcesherpa/context` — Context block schema/assembly
-- `src/sourcesherpa/extractors` — Extractor skeletons
-- `src/sourcesherpa/patterns` — Patterns for code matching
-- `src/sourcesherpa/cli` — CLI entrypoint
+- `src/api` — FastAPI API layer
+- `src/storage` — Storage backends (Mongo, etc)
+- `src/context` — Context block schema/assembly
+- `src/extractors` — Extractor skeletons
+- `src/patterns` — Patterns for code matching
+- `src/cli` — CLI entrypoint
 - `tests/` — Tests, fixture repos
 
 ---
