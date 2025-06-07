@@ -1,0 +1,40 @@
+# Core Python dependencies
+pymongo==4.6.1
+
+# Testing
+pytest==7.4.4
+
+# FastAPI for API layer
+fastapi==0.110.2
+uvicorn==0.29.0
+
+# File and path handling (standard lib in Python 3.4+, but some packages use pathlib2 for py2)
+# pathlib   # You probably don't need to list this, as it's part of stdlib for py3
+
+# For your Streamlit playground (optional; include if used)
+streamlit==1.31.0
+
+# AWS (if you use boto for cloud integrations)
+boto3==1.34.34
+botocore==1.34.34
+
+# BSON utils (for advanced Mongo usage, optional)
+bson==0.5.10
+
+# For vector database use (Qdrant, optional)
+qdrant-client==1.8.0
+
+# If you ever want to run codebert/minilm locally (optional, for advanced users)
+# torch
+# transformers
+
+# For typing and typeguard (optional, for strict type-checking)
+typeguard==2.13.3
+
+# For development tools (optional)
+ipython
+
+# For CLI utilities (optional)
+typer==0.12.3
+
+# (You may have other small deps for specific extractors, but these are core.)
