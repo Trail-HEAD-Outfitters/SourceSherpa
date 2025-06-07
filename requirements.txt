@@ -18,9 +18,6 @@ streamlit==1.31.0
 boto3==1.34.34
 botocore==1.34.34
 
-# BSON utils (for advanced Mongo usage, optional)
-bson==0.5.10
-
 # For vector database use (Qdrant, optional)
 qdrant-client==1.8.0
 
