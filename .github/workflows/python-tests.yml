@@ -14,6 +14,10 @@ jobs:
         image: mongo:6.0
         ports:
           - 27017:27017
+        env:   # 👈 setup mongo
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGO_INITDB_DATABASE: ${{ secrets.MONGODB_DATABASE }}  
         options: >-
           --health-cmd "mongosh --eval 'db.runCommand(\"ping\").ok'" 
           --health-interval 10s
