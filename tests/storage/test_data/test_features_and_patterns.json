@@ -1,0 +1,83 @@
+[
+  {
+    "repo": "alpha-core",
+    "program": "alpha",
+    "group": "Controller",
+    "value": "app/handlers/WidgetController.cs",
+    "matched_pattern": "handlers/*Controller.cs",
+    "notes": "Test controller group",
+    "source_file": "WidgetController.cs.json"
+  },
+  {
+    "repo": "beta-ui",
+    "program": "beta",
+    "group": "React Component",
+    "value": "client/components/FakeButton.jsx",
+    "matched_pattern": "components/*.jsx",
+    "notes": "Sample React component",
+    "source_file": "FakeButton.jsx.json"
+  },
+  {
+    "repo": "delta-logic",
+    "program": "delta",
+    "group": "Service / Manager / Provider",
+    "value": "core/services/FauxService.cs",
+    "matched_pattern": "services/*Service.cs",
+    "notes": "Synthetic service logic",
+    "source_file": "FauxService.cs.json"
+  },
+  {
+    "repo": "omega-data",
+    "program": "omega",
+    "group": "Model / Entity / Record",
+    "value": "domain/entities/ImaginaryModel.cs",
+    "matched_pattern": "entities/*Model.cs",
+    "notes": "Fake model for tests",
+    "source_file": "ImaginaryModel.cs.json"
+  },
+  {
+    "repo": "sigma-api",
+    "program": "sigma",
+    "group": "API Controller",
+    "value": "src/controllers/MockApiController.cs",
+    "matched_pattern": "controllers/*ApiController.cs",
+    "notes": "Dummy API controller",
+    "source_file": "MockApiController.cs.json"
+  },
+  {
+    "repo": "lambda-utils",
+    "program": "lambda",
+    "group": "DTO / Contract / Request",
+    "value": "src/contracts/SampleDto.cs",
+    "matched_pattern": "contracts/*Dto.cs",
+    "notes": "Test DTO object",
+    "source_file": "SampleDto.cs.json"
+  },
+  {
+    "repo": "epsilon-client",
+    "program": "epsilon",
+    "group": "React Hook",
+    "value": "web/hooks/useFakeState.ts",
+    "matched_pattern": "hooks/use*.ts",
+    "notes": "Sample React hook",
+    "source_file": "useFakeState.ts.json"
+  },
+  {
+    "repo": "zeta-test",
+    "program": "zeta",
+    "group": "Unit Test",
+    "value": "tests/fauxModuleTest.cs",
+    "matched_pattern": "tests/*Test.cs",
+    "notes": "Synthetic unit test",
+    "source_file": "fauxModuleTest.cs.json"
+  },
+  {
+    "repo": "tau-lib",
+    "program": "tau",
+    "group": "Startup / Entry-Point",
+    "value": "main/StartTau.cs",
+    "matched_pattern": "main/Start*.cs",
+    "notes": "Entry point simulation",
+    "source_file": "StartTau.cs.json"
+  }
+]

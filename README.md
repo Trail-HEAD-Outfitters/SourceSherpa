@@ -107,7 +107,25 @@ This module extracts and categorizes source code files using project-specific pa
 - **Output:** JSON array (like [your uploaded file](sandbox:/mnt/data/features_and_patterns.json?_chatgptios_conversationID=684452c5-ee44-800f-8a46-4efb49dd4eeb&_chatgptios_messageID=4af3ee18-6f28-42f9-b5e7-3b55537cfb22)) for each code feature.
 - **Next step:** Load this into Mongo, serve via your API.
 
+### 📁 Generated Content
+
+All intermediate outputs and artifacts (AST files, feature lists, etc.) are written to the `generated/` directory at the repo root.
+
+This directory is git-ignored by default (`generated/` in `.gitignore`).
+
+**Example feature loader usage:**
+```bash
+python src/storage/feature_loader.py --input generated/ast_output/features_and_patterns.json
+
 ---
+
+### 🔄 Loading Patterns and Features
+
+To load or refresh patterns (for file categorization):
+
+```bash
+python src/storage/pattern_loader.py
+
 
 ## Project Structure
 
