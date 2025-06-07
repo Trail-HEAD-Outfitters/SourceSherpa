@@ -20,6 +20,13 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    env:  # 👈 Environment variables, some from secrets
+      MONGODB_HOST: localhost
+      MONGODB_PORT: 27017
+      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

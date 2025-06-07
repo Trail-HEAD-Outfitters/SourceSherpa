@@ -1,4 +1,4 @@
-from sourcesherpa.context.block import ContextBlock
+from src.context.block import ContextBlock
 
 def test_block_to_dict():
     block = ContextBlock(

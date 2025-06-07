@@ -25,18 +25,27 @@ import json
 from pathlib import Path
 import argparse
 from pymongo import MongoClient
+from typing import List, Dict, Any
+import os
+import sys
+import os
 
-# MongoDB setup
-MONGO_URI = "mongodb://root:password@localhost:27017/"
-DB_NAME = "code_routing"
-client = MongoClient(MONGO_URI)
-db = client["code_routing"]
-features_col = db["features"]
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+from src.config.settings import settings
+
+class FeatureLoader:
+    def __init__(self):
+        self.client = MongoClient(settings.mongodb_uri)
+        self.db = self.client[settings.mongodb_database]
+        self.collection = self.db["features"]
 
 def load_features(input_path: Path, test_mode=False):
     collection_name = "features_test" if test_mode else "features"
-    client = MongoClient(MONGO_URI)
-    db = client[DB_NAME]
+    client = MongoClient(settings.mongodb_uri)
+    db = client[settings.mongodb_database]
     features_col = db[collection_name]
 
     features_col.delete_many({})

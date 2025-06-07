@@ -7,29 +7,29 @@ A modular backend for extracting, storing, and serving source code context for L
 SourceSherpa supports **multi-stage question answering**, where each stage of the workflow can use the most appropriate storage or retrieval mechanism for the task.
 
 #### **Stage 1: Top-Level Feature Index (MongoDB)**
-- Provides a “table of contents” for the codebase.
+- Provides a "table of contents" for the codebase.
 - Powers broad, project-level questions:
-  - “What kinds of files/features/domains exist?”
-  - “How many web pages/controllers/services are there?”
+  - "What kinds of files/features/domains exist?"
+  - "How many web pages/controllers/services are there?"
 - Data is indexed as feature blocks, stored in MongoDB for fast, flexible lookups.
 
 #### **Stage 2: Semantic & Deep Code Retrieval (Qdrant + Embeddings)**
 - Handles detailed, code-specific queries:
-  - “What are all the fields in the Device domain?”
-  - “How is authentication handled across projects?”
+  - "What are all the fields in the Device domain?"
+  - "How is authentication handled across projects?"
 - Uses Qdrant as a vector store, enabling semantic/code similarity via embeddings (e.g., CodeBERT, MiniLM).
 
 #### **Design Pattern: Pluggable Storage Modules**
 - Each backend (Mongo, Qdrant, others) is a self-contained module under `src/storage/`.
-- The API (MCP) layer routes queries to one or more storage backends depending on the question’s stage and specificity.
+- The API (MCP) layer routes queries to one or more storage backends depending on the question's stage and specificity.
 - Supports easy expansion: add new storage or retrieval mechanisms without breaking the workflow.
 
 #### **Example Flow**
-1. **Initial question:** “What does this project do?”
+1. **Initial question:** "What does this project do?"
    - Answered using features index in Mongo.
-2. **Follow-up:** “Tell me more about the device domain.”
+2. **Follow-up:** "Tell me more about the device domain."
    - Answered using semantic search from Qdrant.
-3. **Deeper query:** “Show me methods for device validation.”
+3. **Deeper query:** "Show me methods for device validation."
    - Answered via additional indexing, code embeddings, or chunk-level search.
 
 ---
@@ -44,18 +44,18 @@ This repo is organized so you can extract, store, and serve code context blocks 
 
 Folder Breakdown
 	•	src/context/
-Defines the schema and handling for “context blocks”—the core unit of knowledge exchanged and stored.
+Defines the schema and handling for "context blocks"—the core unit of knowledge exchanged and stored.
 Contains the ContextBlock class for code features, file snippets, and metadata.
 	•	src/extractors/
 Logic for parsing codebases and extracting features.
 Extractors use patterns to find relevant files or code elements (e.g., controllers, services), and create ContextBlocks.
 	•	src/patterns/
 Reusable language/framework-specific matching patterns.
-For example: “find all *Controller.cs files in a .NET repo,” or “look for React components.”
+For example: "find all *Controller.cs files in a .NET repo," or "look for React components."
 Patterns are used by extractors to guide what to pull out of codebases.
 	•	src/storage/
 Handles reading/writing context blocks to persistent storage.
-Supports different backends (MongoDB, Qdrant, etc.) so you can plug in whatever’s best for your retrieval needs.
+Supports different backends (MongoDB, Qdrant, etc.) so you can plug in whatever's best for your retrieval needs.
 	•	src/api/
 Implements the MCP (Model Context Protocol): the API endpoint that agents and LLMs call to get context blocks.
 When an agent asks a question, the API queries storage/ for matching blocks and returns them in the format defined by context/.
@@ -161,3 +161,56 @@ curl -X POST "http://127.0.0.1:8000/context/query" \
      -d '{"question": "Where are controllers?", "patterns": ["Controller"], "max_blocks": 5}'
 
 ---
+
+## Configuration
+
+This project uses environment variables for configuration. To set up:
+
+1. Copy `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+
+2. Edit `.env` with your configuration:
+```
+MONGODB_HOST=localhost
+MONGODB_PORT=27017
+MONGODB_USERNAME=your_username
+MONGODB_PASSWORD=your_secure_password
+MONGODB_DATABASE=sourcesherpa
+```
+
+3. Make sure `.env` is in your `.gitignore` to prevent committing sensitive information.
+
+---
+## ⚙️ Continuous Integration & Secrets
+
+This project uses **GitHub Actions** for automated CI testing.
+
+**MongoDB credentials are not hardcoded**.  
+They are securely injected at runtime using [GitHub Actions Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+
+### CI Secrets Setup (Maintainers Only)
+
+1. **Go to your repository on GitHub.**
+2. Click `Settings` > `Secrets and variables` > `Actions`.
+3. Click `New repository secret` and add the following:
+
+   | Name               | Example Value    |
+   |--------------------|-----------------|
+   | MONGODB_USERNAME   | root            |
+   | MONGODB_PASSWORD   | [yourpassword ] |
+   | MONGODB_DATABASE   | sourcesherpa    |
+
+4. These secrets are **never exposed in logs or code**.
+
+### Local Development
+
+- For local runs, copy `.env.example` to `.env` and fill in the correct values.
+- **Never commit real secrets or passwords to the repository.**
+
+---
+
+> **Note:**  
+> CI will fail if required secrets are not set.  
+> For more info, see [GitHub Actions: Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).

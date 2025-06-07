@@ -1,14 +1,17 @@
 version: '3.8'
+
 services:
-  mongo:
-    image: mongo:6.0
+  mongodb:
+    image: mongo:latest
     container_name: local-mongo
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - mongodb_data:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME:-root}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGODB_DATABASE:-sourcesherpa}
+
 volumes:
-  mongo-data:
+  mongodb_data:
