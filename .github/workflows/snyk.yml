@@ -1,0 +1,19 @@
+name: Snyk Security Scan
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 3 * * *" # Runs daily at 3am UTC
+  workflow_dispatch: # Allows you to trigger manually
+
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
