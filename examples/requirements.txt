@@ -12,6 +12,6 @@ bson==0.5.10
 
 # FastAPI + CLI
 fastapi==0.115.12
-uvicorn==0.29.0
+uvicorn==0.34.3
 pydantic==2.11.5
 click==8.1.7
