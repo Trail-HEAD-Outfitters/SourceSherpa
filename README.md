@@ -1,4 +1,7 @@
 # SourceSherpa
+## Status
+![CI](https://github.com/scott-london/SourceSherpa/actions/workflows/python-tests.yml/badge.svg)
+[![SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=scott-london_SourceSherpa&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=scott-london_SourceSherpa)
 
 A modular backend for extracting, storing, and serving source code context for LLM/RAG workflows.
 
@@ -215,5 +218,3 @@ They are securely injected at runtime using [GitHub Actions Secrets](https://doc
 > CI will fail if required secrets are not set.  
 > For more info, see [GitHub Actions: Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
 
-## Sonar Cloud Status
-[![SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=scott-london_SourceSherpa&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=scott-london_SourceSherpa)
