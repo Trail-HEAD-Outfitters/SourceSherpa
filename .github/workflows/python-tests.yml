@@ -14,17 +14,17 @@ jobs:
         image: mongo:6.0
         ports:
           - 27017:27017
-        env:   # 👈 setup mongo
+        env:
           MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGODB_USERNAME }}
           MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
-          MONGO_INITDB_DATABASE: ${{ secrets.MONGODB_DATABASE }}  
+          MONGO_INITDB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
         options: >-
           --health-cmd "mongosh --eval 'db.runCommand(\"ping\").ok'" 
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
-    env:  # 👈 Environment variables, some from secrets
+    env:
       MONGODB_HOST: localhost
       MONGODB_PORT: 27017
       MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
@@ -44,7 +44,48 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest pymongo
+          pip install pytest pymongo pytest-cov
 
-      - name: Run tests
-        run: pytest tests/storage/ -v
+      - name: Run tests with coverage
+        run: pytest --cov=src --cov-report=xml
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+  sonarcloud:
+    name: SonarCloud Scan
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          args: >
+            -Dsonar.projectKey=${{ github.repository }}
+            -Dsonar.organization=scott-london
+            -Dsonar.projectKey=scott-london_SourceSherpa
+            -Dsonar.python.version=3.12
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
