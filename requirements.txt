@@ -19,7 +19,7 @@ boto3==1.34.34
 botocore==1.34.34
 
 # For vector database use (Qdrant, optional)
-qdrant-client==1.8.0
+qdrant-client==1.14.2
 
 # If you ever want to run codebert/minilm locally (optional, for advanced users)
 # torch
