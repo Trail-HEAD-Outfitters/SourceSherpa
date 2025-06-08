@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/scott-london/SourceSherpa/actions/workflows/python-tests.yml/badge.svg)](https://github.com/scott-london/SourceSherpa/actions/workflows/python-tests.yml)
 [![SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=scott-london_SourceSherpa&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=scott-london_SourceSherpa)
-![style=gangster](https://img.shields.io/badge/style-%F0%9F%94%8E%20gangster-brightgreen)
+![style=gangster](https://img.shields.io/badge/style-🧢💎%20gangster-brightgreen)
 
 **_The LLM context wrangler. Modular, multi-stage, and extensible—just like your codebase wishes it was._**
 
