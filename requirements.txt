@@ -5,7 +5,7 @@ pymongo>=4.3.3
 pytest==7.4.4
 
 # FastAPI for API layer
-fastapi==0.110.2
+fastapi==0.115.12
 uvicorn==0.29.0
 
 # File and path handling (standard lib in Python 3.4+, but some packages use pathlib2 for py2)
