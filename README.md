@@ -113,7 +113,7 @@ pytest tests/storage/ -v
 
 ---
 
-## 🛡️ Configuration
+### 🛡️ Configuration
 
 This project uses environment variables for configuration. To set up:
 
