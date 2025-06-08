@@ -72,7 +72,7 @@
   "notes": "Handles widget endpoints",
   "source_file": "WidgetController.cs.json"
 }
-'''
+```
 
 ---
 
@@ -87,7 +87,7 @@ python3 -m venv .venv
 source .venv/bin/activate      # On Windows: .venv\Scripts\activate
 pip install --upgrade pip
 pip install -r requirements.txt
-'''
+```
 
 ---
 
@@ -96,7 +96,7 @@ pip install -r requirements.txt
 ```<bash>
 cd src
 docker compose -f docker-compose.mongo.yml up -d
-'''
+```
 ---
 
 ### 3. Load Patterns and Features
@@ -106,14 +106,14 @@ python src/storage/pattern_loader.py
 
 # Load your code features (from extraction step)
 python src/storage/feature_loader.py --input generated/ast_output/features_and_patterns.json
-'''
+```
 ---
 
 ### 4. Run Tests
 
 '''bash
 pytest tests/storage/ -v
-'''
+```
 ---
 
 ### 🛡️ Configuration
