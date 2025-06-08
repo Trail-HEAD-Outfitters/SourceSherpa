@@ -79,7 +79,7 @@ jobs:
           name: coverage-report
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
+        uses: SonarSource/sonarcloud-github-action@v5
         with:
           args: >
             -Dsonar.projectKey=${{ github.repository }}
