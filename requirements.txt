@@ -26,7 +26,7 @@ qdrant-client==1.8.0
 # transformers
 
 # For typing and typeguard (optional, for strict type-checking)
-typeguard==2.13.3
+typeguard==4.4.3
 
 # For development tools (optional)
 ipython
