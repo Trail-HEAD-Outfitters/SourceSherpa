@@ -1,0 +1,66 @@
+name: Python Storage Loaders CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/storage/**"
+      - "tests/storage/**"
+      - "requirements.txt"
+      - "pyproject.toml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/storage/**"
+      - "tests/storage/**"
+      - "requirements.txt"
+      - "pyproject.toml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGO_INITDB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand(\"ping\").ok'" 
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      MONGODB_HOST: localhost
+      MONGODB_PORT: 27017
+      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_DATABASE: sourcesherpa
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pymongo pytest-cov
+
+      - name: Run storage tests with coverage
+        run: pytest tests/storage --cov=src/storage --cov-report=xml
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-coverage-report
+          path: coverage.xml
