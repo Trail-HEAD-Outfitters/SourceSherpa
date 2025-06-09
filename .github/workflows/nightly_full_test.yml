@@ -1,0 +1,17 @@
+name: Nightly Full Test Suite
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # Every day at 6:00 UTC
+  workflow_dispatch:
+
+jobs:
+  test-extractors:
+    uses: ./.github/workflows/test_extractors.yml
+  test-api:
+    uses: ./.github/workflows/test_api.yml
+  test-storage:
+    uses: ./.github/workflows/test_storage.yml
+  aggregate-and-sonarcloud:
+    uses: ./.github/workflows/python-tests.yml
+    needs: [test-extractors, test-api, test-storage]
