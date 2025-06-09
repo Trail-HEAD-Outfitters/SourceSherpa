@@ -26,11 +26,11 @@ jobs:
         ports:
           - 27017:27017
         env:
-          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
-          MONGO_INITDB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: sourcesherpa123
+          MONGO_INITDB_DATABASE: sourcesherpa
         options: >-
-          --health-cmd "mongosh --eval 'db.runCommand(\"ping\").ok'"
+          --health-cmd mongosh --eval "db.runCommand({ping: 1})"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -38,8 +38,8 @@ jobs:
     env:
       MONGODB_HOST: localhost
       MONGODB_PORT: 27017
-      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: sourcesherpa123
       MONGODB_DATABASE: sourcesherpa
 
     steps:
