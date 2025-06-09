@@ -6,7 +6,7 @@
   "files.exclude": {
     "**/__pycache__": true,
     "**/.mypy_cache": true,
-    "generated": true
+    "generated": false
   },
   "python.envFile": "${workspaceFolder}/.env"
 }
