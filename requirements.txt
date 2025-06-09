@@ -6,7 +6,7 @@ pytest==7.4.4
 
 # FastAPI for API layer
 fastapi==0.115.12
-uvicorn==0.29.0
+uvicorn==0.34.3
 
 # File and path handling (standard lib in Python 3.4+, but some packages use pathlib2 for py2)
 # pathlib   # You probably don't need to list this, as it's part of stdlib for py3
