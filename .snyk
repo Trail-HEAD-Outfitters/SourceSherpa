@@ -1,0 +1,5 @@
+ignore:
+  SNYK-PYTHON-REQUESTS-10305723:
+    - '*':
+        reason: No fix available, risk accepted for now
+        expires: 2025-12-31T23:59:59Z
