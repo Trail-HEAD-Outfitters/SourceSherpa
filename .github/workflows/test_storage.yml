@@ -1,6 +1,7 @@
 name: Python Storage Loaders CI
 
 on:
+  workflow_call:
   push:
     branches: [main]
     paths:
