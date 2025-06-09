@@ -1,180 +1,188 @@
-# 🚀 SourceSherpa
+# 🚀 SourceSherpa – The LLM Context Wrangler  
+*Multi-stage · Modular · Extensible — like your codebase wishes it was.*
 
-[![CI](https://github.com/scott-london/SourceSherpa/actions/workflows/python-tests.yml/badge.svg)](https://github.com/scott-london/SourceSherpa/actions/workflows/python-tests.yml)
-[![SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=scott-london_SourceSherpa&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=scott-london_SourceSherpa)
+[![CI](https://github.com/<your-org>/SourceSherpa/actions/workflows/python-tests.yml/badge.svg)](https://github.com/<your-org>/SourceSherpa/actions/workflows/python-tests.yml)
+[![SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=<your-org>_SourceSherpa&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=<your-org>_SourceSherpa)
 ![style=gangster](https://img.shields.io/badge/🔫%20style-gangster-brightgreen)
 
-**_The LLM context wrangler. Modular, multi-stage, and extensible—just like your codebase wishes it was._**
+> **What is it?**  
+> SourceSherpa extracts, stores, and serves *just enough* source-code context to let LLMs answer deep engineering questions **without** hallucinating your whole architecture.  
+> Think of it as a RAG-ready, multi-stage “table of contents + vector store” for .NET monoliths, React front-ends, SQL scripts, and everything in between.
 
 ---
 
-> **What does this repo do?**  
-> Extracts, stores, and serves _just enough_ source code context for AI agents and RAG—so your LLMs don’t hallucinate your whole architecture.
+## 🌐 Why You Might Care
+
+| You need to…                                    | SourceSherpa gives you…                             |
+|-------------------------------------------------|-----------------------------------------------------|
+| Reverse-engineer features & API surfaces        | A **feature-tagged index** of every Controller / Service / etc. |
+| Trace bugs & production exceptions              | **Fine-grained code chunks** retrievable by error, symbol, or embedding |
+| Feed an agent / Copilot-style LLM               | A **two-stage retrieval API** that respects context limits |
+| Swap models & vector DBs at will                | **Pluggable storage / embedding back-ends** (MongoDB ➜ Qdrant ➜ _You-name-it_) |
 
 ---
 
-## 💹 Status
+## 🏗️  Multi-Stage Retrieval Pipeline
 
-- **CI:** [![CI](https://github.com/scott-london/SourceSherpa/actions/workflows/python-tests.yml/badge.svg)](https://github.com/scott-london/SourceSherpa/actions/workflows/python-tests.yml)
-- **SonarCloud:** [![SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=scott-london_SourceSherpa&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=scott-london_SourceSherpa)
-- **Coverage:** _Coming soon!_
-- **Auto-dependency updates:** **[Enabled with Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates)**
-
----
-
-## 🔁 Multi-Stage, Pluggable Storage & Retrieval
-
-**SourceSherpa is designed for _multi-stage codebase question answering_.**
-
-| Stage | Storage     | Handles                                                                                  |
-|-------|-------------|------------------------------------------------------------------------------------------|
-| 1     | MongoDB     | Broad codebase questions. Table of contents, features, “What’s here?”                    |
-| 2     | Qdrant + Embeds | Deep/semantic code questions. Details, code structure, relationships                |
-| 3     | Plug your own! | Want Redis? Pinecone? Custom API? Drop it in.                                         |
-
-### 🟢 Example Flow:
-1. **“What does this project do?”** → Fast top-level via MongoDB.
-2. **“What’s in the device domain?”** → Qdrant vector search.
-3. **“Show me validation code.”** → Embeddings or file chunk search.
-
----
-
-## 🗂️ Project Structure
-
-| Folder           | What it does                                                                                 |
-|------------------|---------------------------------------------------------------------------------------------|
-| `src/context/`   | Context block schema, “knowledge objects” for storage & retrieval                           |
-| `src/extractors/`| Parses codebases & extracts features based on patterns                                      |
-| `src/patterns/`  | Language/framework matching patterns (globs, regexes, etc.)                                 |
-| `src/storage/`   | Read/write context to MongoDB, Qdrant, or your next plugin                                  |
-| `src/api/`       | The MCP (Model Context Protocol) API endpoints for agents & LLMs                            |
-| `generated/`     | All generated/temporary files (auto .gitignored)                                            |
-| `tests/`         | Tests and fixtures                                                                          |
-
----
-
-## ⚡️ Code Feature Extraction: How It Works
-
-1. **Load Patterns:** Patterns from Mongo define _what to look for_ (e.g. `*Controller.cs`).
-2. **Scan & Categorize:** Each file/AST output is categorized and mapped to a “feature.”
-3. **Export:** Everything lands in a flat JSON (see below).
-4. **Load to DB:** Use loaders to inject features/patterns into MongoDB (for queries).
-
-**Sample Output (feature block):**
-
-```json
-{
-  "repo": "project-x",
-  "program": "my-solution",
-  "group": "Controller",
-  "value": "src/Controllers/WidgetController.cs",
-  "matched_pattern": "Controllers/*Controller.cs",
-  "notes": "Handles widget endpoints",
-  "source_file": "WidgetController.cs.json"
-}
+```text
+                ┌──────────────┐  nightly/CI   ┌───────────────┐
+Repos  ───────► │  Extractor   │──────────────►│ Feature Mongo │  (coarse)
+(.cs .tsx .sql) └──────────────┘               └───────────────┘
+        │  AST + glob                                    ▲
+        │  chunk + embed                                 │ metadata
+        ▼                                                │
+┌───────────────────┐  vectors     ┌──────────────┐      │
+│  Embed Service    │────────────►│  Vector DB    │◄─────┘
+└───────────────────┘ (BGE / GTE) │  (Qdrant)     │
+                                  └──────────────┘
+                                         ▲  hybrid search
+                                         │
+                             ┌───────────┴───────────┐
+                             │  Query API / Agent    │
+                             │  (AWS Bedrock LLM)    │
+                             └───────────┬───────────┘
+                                         │
+                               Structured Answer JSON
 ```
 
+| Stage | Store | Purpose | Default Tech |
+|-------|-------|---------|--------------|
+| **1** | MongoDB | “Table-of-Contents” · fast filters (`Controllers`, `DbContext`, etc.) | `docker-compose.mongo.yml` |
+| **2** | Qdrant | Code chunks (~1 k tks) + embeddings · hybrid search (vector + BM25) | `docker-compose.qdrant.yml` |
+| **3** | Agent / LLM | Tool-calls: `search_features`, `search_code` · decides when to dive deeper | AWS Bedrock (Claude 3 Sonnet / Titan) |
+
 ---
 
-## ⚡️ Quickstart
+## 🗂️  Repo Layout
 
-### 1. Clone & Setup
+| Folder | Purpose |
+|--------|---------|
+| `src/extractors/`  | Parse C# (Roslyn), TS/React (Tree-sitter), SQL, etc. |
+| `src/patterns/`    | Language / framework glob & regex patterns |
+| `src/storage/`     | `mongo.py`, `feature_loader.py`, `vec_loader.py` |
+| `src/context/`     | Pydantic models for **FeatureBlock** & **CodeChunk** |
+| `src/api/`         | FastAPI endpoints + LangChain agent |
+| `tests/`           | Unit / integration + fixtures |
+| `generated/`       | AST dumps & JSON output (git-ignored) |
+
+---
+
+## ⚡ Quick Start (5 min)
 
 ```bash
-git clone https://github.com/scott-london/SourceSherpa.git
+git clone https://github.com/<your-org>/SourceSherpa.git
 cd SourceSherpa
-python3 -m venv .venv
-source .venv/bin/activate      # On Windows: .venv\Scripts\activate
-pip install --upgrade pip
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
+### 1 · Spin up storage
 
-### 2. Start MongoDB (Docker)
-
-```<bash>
-cd src
-docker compose -f docker-compose.mongo.yml up -d
+```bash
+docker compose -f src/docker-compose.mongo.yml up -d        # MongoDB (TOC)
+docker compose -f src/docker-compose.qdrant.yml up -d       # Qdrant (vectors)
 ```
----
 
-### 3. Load Patterns and Features
-'''bash
-# Load default patterns
-python src/storage/pattern_loader.py
+### 2 · Extract & load one repo
 
-# Load your code features (from extraction step)
-python src/storage/feature_loader.py --input generated/ast_output/features_and_patterns.json
+```bash
+# Extract features & code chunks
+python src/cli/run_extract.py --repo /path/to/your/solution.sln                               --out generated/myrepo_features.json
+
+# Load Stage-1 (Mongo) and Stage-2 (Qdrant)
+python src/storage/feature_loader.py  generated/myrepo_features.json
+python src/storage/vec_loader.py      generated/myrepo_features.json
 ```
----
 
-### 4. Run Tests
+### 3 · Ask a question
 
-'''bash
-pytest tests/storage/ -v
+```bash
+uvicorn src.api.app:app --reload
+# POST /ask  { "question": "Where is the RemoteFacilityController implemented?" }
 ```
----
-
-### 🛡️ Configuration
-
-This project uses environment variables for configuration. To set up:
-
-1. Copy `.env.example` to `.env`:
-    ```bash
-    cp .env.example .env
-    ```
-2. Edit `.env` with your configuration:
-    ```
-    MONGODB_HOST=localhost
-    MONGODB_PORT=27017
-    MONGODB_USERNAME=your_username
-    MONGODB_PASSWORD=your_secure_password
-    MONGODB_DATABASE=sourcesherpa
-    ```
-3. Make sure `.env` is in your `.gitignore` to prevent committing sensitive information.
 
 ---
 
-## ⚙️ Continuous Integration & Secrets
+## 🔧 Configuration
 
-This project uses **GitHub Actions** for automated CI testing.
+Create `.env` (copy from `.env.example`) and set:
 
-- **MongoDB credentials are not hardcoded**.  
-  They are securely injected at runtime using [GitHub Actions Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+```dotenv
+MONGO_URL=mongodb://root:password@localhost:27017/
+QDRANT_URL=http://localhost:6333
+EMBED_MODEL=bge-large-en          # BGE, GTE, MiniLM, etc.
+LLM_PROVIDER=bedrock_claude3      # or openai_gpt4o, etc.
+MAX_CONTEXT_TOKENS=8192
+```
 
-### CI Secrets Setup (Maintainers Only)
-
-1. Go to your repository on GitHub.
-2. Click `Settings` > `Secrets and variables` > `Actions`.
-3. Click `New repository secret` and add the following:
-
-   | Name               | Example Value      |
-   |--------------------|-------------------|
-   | MONGODB_USERNAME   | root              |
-   | MONGODB_PASSWORD   | [yourpassword]    |
-   | MONGODB_DATABASE   | sourcesherpa      |
-
-4. These secrets are **never exposed in logs or code**.
-
-### Local Development
-
-- For local runs, copy `.env.example` to `.env` and fill in the correct values.
-- **Never commit real secrets or passwords to the repository.**
-
-> **Note:**  
-> CI will fail if required secrets are not set.  
-> For more info, see [GitHub Actions: Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+All configs are loaded via [`src/config/settings.py`](src/config).
 
 ---
 
-## 🧩 How This Fits
+## 🛣  MVP Roadmap
 
-- **Input:** AST-extracted or raw code filepaths, plus patterns from Mongo.
-- **Process:** Script matches files to roles using glob patterns and heuristics.
-- **Output:** JSON array for each code feature.
-- **Next step:** Load this into Mongo, serve via your API.
+1. **Extractor MVP** ✔ (patterns + AST dump → JSON)  
+2. **Embedding Loader** ⬜ (chunk → BGE vector → Qdrant)  
+3. **Coarse Query API** ⬜ (`/ask` hits Mongo only)  
+4. **Agent Router** ⬜ (LLM chooses `search_code` when needed)  
+5. **Evaluation Dashboards** ⬜ (precision, latency, token cost)  
+6. **Security & PII Guardrails** ⬜ (secret-scrub, repo ACL)  
+7. **Docs & Demo notebooks** ⬜
 
 ---
 
-## 🤘 Made with ❤️ by Scott London (and AI)
+## 🧠  How Feature Extraction Works
+
+1. **Load pattern map** (see [`src/patterns/default_patterns.py`](src/patterns)).  
+2. **Walk repo**: glob + AST to tag each file with `group`, `lang`, etc.  
+3. **Auto-summary**: grab first XML doc-comment or generate one-liner via local LLM.  
+4. **Emit `FeatureBlock` JSON**:
+
+```json
+{
+  "repo": "phg-server",
+  "group": "Controller",
+  "value": "src/Controllers/RemoteFacilityController.cs",
+  "snippet": "Handles CRUD for remote facility records.",
+  "lang": "cs",
+  "tokens": 845,
+  "hash": "53da…a1c9"
+}
+```
+
+5. **Optional**: dedupe via `(repo, hash)` and skip re-embedding unchanged files.
+
+---
+
+## 🪄  Agent & LLM (Stage 3)
+
+- **Tool schema**:  
+  - `search_features(query, k, filters)` → Mongo  
+  - `search_code(query, k, filters)`    → Qdrant  
+- **Policy**:  
+  1. Always call **`search_features`** first.  
+  2. If similarity < `CONFIDENCE_THRESHOLD` or answer still unclear → call **`search_code`**.  
+  3. Compose final answer with citations (path + line numbers).  
+- Implemented with **LangChain**; runs on **AWS Bedrock** (Claude 3 Sonnet, 32 k ctx).  
+- Guardrails: max 2 tool calls; if still unsure → ask user for clarification.
+
+---
+
+## 🔐  Secrets & CI
+
+- Secrets injected via **GitHub Actions Encrypted Secrets**.  
+- `.env` keeps local credentials; **never check real secrets** into VCS.  
+- CI runs lint, tests, SonarCloud scan on every PR.
+
+---
+
+## 🤝  Contributing
+
+PRs & issues welcomed—especially new extraction patterns (.proto, Rust, etc.).  
+Run `pre-commit install` to auto-format with Black & Ruff.
+
+---
+
+## 📜  License
+
+MIT © 2024 Scott London & Contributors
