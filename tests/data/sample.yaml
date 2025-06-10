@@ -1,0 +1,6 @@
+name: SampleApp
+version: 1.0.0
+description: A minimal YAML example for tree-sitter testing
+settings:
+  enabled: true
+  retries: 3

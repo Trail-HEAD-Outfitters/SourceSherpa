@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "List all exported symbols in my-languages.so",
+			"type": "shell",
+			"command": "docker run --rm tree-sitter-sidecar:latest nm -g /build/my-languages.so | grep tree_sitter_ || echo 'symbol not found'",
+			"group": "build",
+			"isBackground": false
+		}
+	]
+}

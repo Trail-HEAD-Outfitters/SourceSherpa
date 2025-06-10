@@ -217,6 +217,8 @@ print(features)
 ```
 - `lang_id` must match a supported grammar (e.g. `c_sharp`, `typescript`, `tsx`, `css`, `html`, `javascript`, `json`).
 
+Building the .so file is still problematic, this will need to get sorted out at some point.
+
 ### Supported Languages
 - The grammars included in `my-languages.so` determine which languages are supported. To add or update grammars, rebuild the `.so` file and update the Docker build context.
 
