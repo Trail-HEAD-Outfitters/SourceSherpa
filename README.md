@@ -177,4 +177,54 @@ This project uses **GitHub Actions** for automated CI testing.
 
 ---
 
+## Tree-sitter API Sidecar (AST Parsing)
+
+For robust, language-agnostic AST parsing, SourceSherpa uses a Dockerized tree-sitter API sidecar. This isolates all tree-sitter and grammar build dependencies from your main environment.
+
+### How it works
+- A prebuilt `my-languages.so` (tree-sitter grammars) is included in the Docker build context.
+- The sidecar exposes a REST API at `/parse` for supported languages (C#, TypeScript, TSX, CSS, HTML, JavaScript, JSON, etc.).
+- Your extractors POST source files to this API and receive AST-derived features as JSON.
+
+### Running the Sidecar
+1. **Build the Docker image:**
+   ```zsh
+   # From project root
+   cp build/my-languages.so src/docker/tree_sitter_api/
+   cd src/docker/tree_sitter_api
+   docker build -t treesitter-api .
+   ```
+2. **Run the container:**
+   ```zsh
+   docker run --rm -p 9000:9000 treesitter-api
+   ```
+
+### Using the API from Python
+```python
+import requests
+
+def parse_with_treesitter_api(filepath, lang_id, api_url="http://localhost:9000/parse"):
+    with open(filepath, "rb") as f:
+        files = {"file": (filepath, f)}
+        data = {"lang_id": lang_id}
+        resp = requests.post(api_url, files=files, data=data)
+        resp.raise_for_status()
+        return resp.json()["features"]
+
+# Example usage:
+features = parse_with_treesitter_api("path/to/your/file.cs", "c_sharp")
+print(features)
+```
+- `lang_id` must match a supported grammar (e.g. `c_sharp`, `typescript`, `tsx`, `css`, `html`, `javascript`, `json`).
+
+### Supported Languages
+- The grammars included in `my-languages.so` determine which languages are supported. To add or update grammars, rebuild the `.so` file and update the Docker build context.
+
+### Why this approach?
+- **No dependency spiral:** No need to install or build tree-sitter locally.
+- **Reproducible:** The API is always consistent, regardless of host OS or Python version.
+- **Easy CI/CD:** The sidecar can be run in any environment that supports Docker.
+
+---
+
 ## 🤘 Made with ❤️ by Scott London (and AI)
