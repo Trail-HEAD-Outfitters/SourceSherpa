@@ -15,7 +15,7 @@ RUN git clone --depth 1 https://github.com/tree-sitter/tree-sitter-c.git && \
     git clone --depth 1 https://github.com/tree-sitter/tree-sitter-typescript.git && \
     git clone --depth 1 https://github.com/tree-sitter/tree-sitter-javascript.git && \
     git clone --depth 1 https://github.com/tree-sitter/tree-sitter-c-sharp.git
-
+    
 # Ensure JS grammar is importable as a directory (for typescript/tsx)
 RUN mkdir -p /build/tree-sitter-javascript/grammar && \
     cp /build/tree-sitter-javascript/grammar.js /build/tree-sitter-javascript/grammar/index.js
@@ -44,6 +44,7 @@ RUN gcc -fPIC \
     -I./tree-sitter-css/src \
     -I./tree-sitter-html/src \
     -I./tree-sitter-json/src \
+    -I./tree-sitter-javascript/src \
     -I./tree-sitter-typescript/typescript/src \
     -I./tree-sitter-typescript/tsx/src \
     -I./tree-sitter-c-sharp/src \
@@ -52,6 +53,7 @@ RUN gcc -fPIC \
     tree-sitter-css/src/parser.c tree-sitter-css/src/scanner.c \
     tree-sitter-html/src/parser.c tree-sitter-html/src/scanner.c \
     tree-sitter-json/src/parser.c \
+    tree-sitter-javascript/src/parser.c tree-sitter-javascript/src/scanner.c \
     tree-sitter-typescript/typescript/src/parser.c tree-sitter-typescript/typescript/src/scanner.c \
     tree-sitter-typescript/tsx/src/parser.c tree-sitter-typescript/tsx/src/scanner.c \
     tree-sitter-c-sharp/src/parser.c tree-sitter-c-sharp/src/scanner.c \

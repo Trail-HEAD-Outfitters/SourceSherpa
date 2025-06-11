@@ -1,0 +1,406 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+/* 8-bit NES/Nintendo theme for SourceSherpa UI */
+
+.nesPage {
+  background: #1a1a1a url('https://www.transparenttextures.com/patterns/square-bg.png');
+  min-height: 100vh;
+  font-family: 'Press Start 2P', 'VT323', 'Courier New', Courier, monospace;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.nesMain {
+  background: #222;
+  border: 4px solid #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 0 8px #c1272d, 0 0 0 12px #fff;
+  padding: 40px 32px 32px 32px;
+  margin-top: 48px;
+  min-width: 350px;
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nesTitleBlock {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.nesLogo {
+  margin-bottom: 8px;
+}
+.nesLogoRow {
+  display: flex;
+  gap: 2px;
+  font-family: 'Press Start 2P', 'VT323', monospace;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+  color: #fff;
+  text-shadow: 2px 2px #c1272d, 4px 4px #fff;
+  align-items: center;
+}
+.nesLogoN {
+  color: #f8e36a;
+}
+.nesLogoE, .nesLogoS, .nesLogoDot, .nesLogoJs {
+  color: #fff;
+}
+.nesBlink {
+  animation: nes-blink 1s steps(2, start) infinite;
+}
+@keyframes nes-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.nesTitle {
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: #f8e36a;
+  text-shadow: 2px 2px #c1272d, 4px 4px #fff;
+  margin: 0;
+}
+.nesSubtitle {
+  font-size: 1rem;
+  color: #fff;
+  margin: 0 0 8px 0;
+  text-shadow: 1px 1px #c1272d;
+}
+
+.nesForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+.nesLabel {
+  font-size: 0.9rem;
+  color: #f8e36a;
+  text-shadow: 1px 1px #c1272d;
+  margin-bottom: 4px;
+}
+.nesInput, .nesTextarea {
+  font-family: inherit;
+  font-size: 1rem;
+  background: #111;
+  color: #fff;
+  border: 2px solid #f8e36a;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 4px;
+  outline: none;
+  box-shadow: 2px 2px #c1272d;
+  transition: border 0.2s;
+}
+.nesInput:focus, .nesTextarea:focus {
+  border: 2px solid #c1272d;
+}
+.nesButton {
+  font-family: inherit;
+  font-size: 1.1rem;
+  background: #c1272d;
+  color: #fff;
+  border: 2px solid #f8e36a;
+  border-radius: 4px;
+  padding: 10px 0;
+  margin-top: 8px;
+  cursor: pointer;
+  box-shadow: 2px 2px #f8e36a;
+  text-shadow: 1px 1px #222;
+  transition: background 0.2s;
+}
+.nesButton:active {
+  background: #f8e36a;
+  color: #c1272d;
+}
+.nesError {
+  color: #ff4c4c;
+  background: #222;
+  border: 2px solid #c1272d;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  text-align: center;
+  box-shadow: 2px 2px #c1272d;
+}
+.nesResultBlock {
+  background: #111;
+  border: 2px solid #f8e36a;
+  border-radius: 8px;
+  margin-top: 32px;
+  padding: 18px 12px;
+  box-shadow: 2px 2px #c1272d;
+  width: 100%;
+}
+.nesResultPanel {
+  background: #111;
+  border: 2px solid #f8e36a;
+  border-radius: 12px;
+  margin-top: 32px;
+  padding: 24px 28px 24px 28px;
+  box-shadow: 2px 2px #c1272d, 0 0 0 6px #fff;
+  width: 98vw;
+  max-width: 1100px;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+.nesResultTitle {
+  color: #f8e36a;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  text-shadow: 1px 1px #c1272d;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #c1272d;
+  padding-bottom: 4px;
+}
+.nesResultSections {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.nesResultSection {
+  background: #181818;
+  border: 1.5px solid #f8e36a;
+  border-radius: 8px;
+  padding: 12px 10px 10px 10px;
+  box-shadow: 1px 1px #c1272d;
+  margin-bottom: 0;
+}
+.nesResultText {
+  background: #222;
+  color: #fff;
+  font-size: 1.05rem;
+  border-radius: 4px;
+  padding: 14px;
+  font-family: 'VT323', 'Courier New', Courier, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.nesResultTextScrollable {
+  max-height: 480px;
+  min-height: 180px;
+  overflow-y: auto;
+  border: 1px dashed #f8e36a;
+  background: #191919;
+  background-clip: padding-box;
+  color: #fff;
+  font-size: 1.05rem;
+  border-radius: 4px;
+  padding: 14px;
+  font-family: 'VT323', 'Courier New', Courier, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.nesResultDocItem {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dotted #c1272d;
+  font-size: 1.01rem;
+}
+.nesResultDocItem:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.nesFooter {
+  margin-top: 32px;
+  text-align: center;
+  color: #f8e36a;
+  font-size: 0.8rem;
+  text-shadow: 1px 1px #c1272d;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+.nesFooterBlink {
+  color: #f8e36a;
+  animation: nes-blink 1s steps(2, start) infinite;
+  font-family: 'Press Start 2P', 'VT323', monospace;
+  font-size: 1.1rem;
+}
+.nesFooterText {
+  color: #fff;
+  font-size: 0.8rem;
+  font-family: 'Press Start 2P', 'VT323', monospace;
+}
+
+.page {
+  --gray-rgb: 0, 0, 0;
+  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+
+  display: grid;
+  grid-template-rows: 20px 1fr 20px;
+  align-items: center;
+  justify-items: center;
+  min-height: 100svh;
+  padding: 80px;
+  gap: 64px;
+  font-family: var(--font-geist-sans);
+}
+
+@media (prefers-color-scheme: dark) {
+  .page {
+    --gray-rgb: 255, 255, 255;
+    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
+
+    --button-primary-hover: #ccc;
+    --button-secondary-hover: #1a1a1a;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  grid-row-start: 2;
+}
+
+.main ol {
+  font-family: var(--font-geist-mono);
+  padding-left: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  list-style-position: inside;
+}
+
+.main li:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.main code {
+  font-family: inherit;
+  background: var(--gray-alpha-100);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.ctas {
+  display: flex;
+  gap: 16px;
+}
+
+.ctas a {
+  appearance: none;
+  border-radius: 128px;
+  height: 48px;
+  padding: 0 20px;
+  border: none;
+  border: 1px solid transparent;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+a.primary {
+  background: var(--foreground);
+  color: var(--background);
+  gap: 8px;
+}
+
+a.secondary {
+  border-color: var(--gray-alpha-200);
+  min-width: 158px;
+}
+
+.footer {
+  grid-row-start: 3;
+  display: flex;
+  gap: 24px;
+}
+
+.footer a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer img {
+  flex-shrink: 0;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  a.primary:hover {
+    background: var(--button-primary-hover);
+    border-color: transparent;
+  }
+
+  a.secondary:hover {
+    background: var(--button-secondary-hover);
+    border-color: transparent;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 32px;
+    padding-bottom: 80px;
+  }
+
+  .main {
+    align-items: center;
+  }
+
+  .main ol {
+    text-align: center;
+  }
+
+  .ctas {
+    flex-direction: column;
+  }
+
+  .ctas a {
+    font-size: 14px;
+    height: 40px;
+    padding: 0 16px;
+  }
+
+  a.secondary {
+    min-width: auto;
+  }
+
+  .footer {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    filter: invert();
+  }
+}

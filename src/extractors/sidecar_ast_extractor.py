@@ -9,8 +9,8 @@ import os, json, requests
 from pathlib import Path
 
 ROOT       = Path(__file__).resolve().parents[2]
-SOURCE_IN  = ROOT / "repos"                      # adjust as needed
-OUT_DIR    = ROOT / "generated" / "output"
+SOURCE_IN  = ROOT / "pyxis"                      # adjust as needed
+OUT_DIR    = ROOT / "generatednew" / "output"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 TS_API = os.getenv("TS_API", "http://localhost:9000")
