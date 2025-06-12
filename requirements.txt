@@ -25,6 +25,10 @@ qdrant-client==1.14.2
 # torch
 # transformers
 
+# For local embedding (CodeBERT, etc.)
+torch
+transformers
+
 # For typing and typeguard (optional, for strict type-checking)
 typeguard==4.2.1
 
